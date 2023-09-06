@@ -141,7 +141,6 @@ jobs:
           tar -xzvf site.tar.gz
           rm -f site.tar.gz
 
-      # Allow auto-merge on general
       - name: Create Pull Request
         id: create_pr
         uses: peter-evans/create-pull-request@v5.0.2
