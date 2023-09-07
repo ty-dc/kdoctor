@@ -52,11 +52,11 @@ nav:
   - Concepts:
       - Architecture: reference/arch.md
   - Reference:
-      - AppHttpHealthy: reference/apphttphealthy-zh_CN.md
-      - NetReach: reference/netreach-zh_CN.md
-      - NetDns: reference/netdns-zh_CN.md
+      - AppHttpHealthy: reference/apphttphealthy.md
+      - NetReach: reference/netreach.md
+      - NetDns: reference/netdns.md
       - Report: reference/report.md
-      - Performance: reference/performance.md
+      - Performance: usage/performance.md
   - Development:
       - Release workflow: develop/release.md
       - Roadmap: develop/roadmap.md
