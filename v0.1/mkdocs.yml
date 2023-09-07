@@ -42,7 +42,6 @@ markdown_extensions:
   - attr_list
 
 nav:
-  - README.md
   - Installation:
       - Installation: usage/install.md
       - Quickly Started: usage/get-started-kind.md
