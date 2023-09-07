@@ -45,16 +45,20 @@ nav:
   - README.md
   - Installation:
       - Installation: usage/install.md
+      - Quickly Started: usage/get-started-kind.md
   - Usage:
       - AppHttpHealthy: usage/apphttphealthy.md
       - NetReach: usage/netreach.md
       - NetDns: usage/netdns.md
   - Concepts:
       - Architecture: reference/arch.md
+      - Runtime: concepts/runtime.md
   - Reference:
       - AppHttpHealthy: reference/apphttphealthy.md
       - NetReach: reference/netreach.md
       - NetDns: reference/netdns.md
+      - kdoctor-controller: reference/kdoctor-controller.md
+      - kdoctor-agent: reference/kdoctor-agent.md
       - Report: reference/report.md
       - Performance: usage/performance.md
   - Development:
