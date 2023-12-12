@@ -1070,17 +1070,17 @@
       You can use the kdoctor aggregate report <code>kubectl get kdoctorreport</code> to view the QPS count of other concurrently running tasks.
       Stagger the task execution time or isolate the task by defining agentSpec to specify the kdoctor agent to execute the task. Because QPS statistics are time-sensitive, they can be used together with the log as a reference. 
       Before the task execution starts, the currently executing QPS will be output to the log。
-       <code>shell
-        ~kubectl logs kdoctor-agent-74rrp  -n kdoctor |grep "Before the current task starts"
-        {"level":"DEBUG","ts":"2023-11-07T10:01:02.821Z","agent":"agent.agentController.AppHttpHealthyReconciler.AppHttpHealthy.test-task.round1","caller":"pluginManager/agentTools.go:90","msg":"Before the current task starts, the total QPS of the tasks being executed is AppHttpHealth=100,NetReach=0,NetDNS=0","AppHttpHealthy":"test-task"}</code>
-       <code>shell
-        ~kubectl get kdoctorreport test-task -oyaml
-        ...
-        TotalRunningLoad:
-          AppHttpHealthyQPS: 100
-          NetDnsQPS: 50
-          NetReachQPS: 0
-        ...</code>
+       <div class="highlight"><pre><span></span><code><span class="w"> </span>~kubectl<span class="w"> </span>logs<span class="w"> </span>kdoctor-agent-74rrp<span class="w">  </span>-n<span class="w"> </span>kdoctor<span class="w"> </span><span class="p">|</span>grep<span class="w"> </span><span class="s2">&quot;Before the current task starts&quot;</span>
+<span class="w"> </span><span class="o">{</span><span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;DEBUG&quot;</span>,<span class="s2">&quot;ts&quot;</span>:<span class="s2">&quot;2023-11-07T10:01:02.821Z&quot;</span>,<span class="s2">&quot;agent&quot;</span>:<span class="s2">&quot;agent.agentController.AppHttpHealthyReconciler.AppHttpHealthy.test-task.round1&quot;</span>,<span class="s2">&quot;caller&quot;</span>:<span class="s2">&quot;pluginManager/agentTools.go:90&quot;</span>,<span class="s2">&quot;msg&quot;</span>:<span class="s2">&quot;Before the current task starts, the total QPS of the tasks being executed is AppHttpHealth=100,NetReach=0,NetDNS=0&quot;</span>,<span class="s2">&quot;AppHttpHealthy&quot;</span>:<span class="s2">&quot;test-task&quot;</span><span class="o">}</span>
+</code></pre></div>
+       <div class="highlight"><pre><span></span><code><span class="w"> </span>~kubectl<span class="w"> </span>get<span class="w"> </span>kdoctorreport<span class="w"> </span>test-task<span class="w"> </span>-oyaml
+<span class="w"> </span>...
+<span class="w"> </span>TotalRunningLoad:
+<span class="w">   </span>AppHttpHealthyQPS:<span class="w"> </span><span class="m">100</span>
+<span class="w">   </span>NetDnsQPS:<span class="w"> </span><span class="m">50</span>
+<span class="w">   </span>NetReachQPS:<span class="w"> </span><span class="m">0</span>
+<span class="w"> </span>...
+</code></pre></div>
 <strong>Q: Why does the Kdoctor agent experience OOM (Out of Memory) issues ？</strong>
 * A: The Kdoctor agent serves as the default agent for executing tasks when no specific agent is specified in the task. Currently, the agent does not support features to reject or delay task execution based on the workload. 
      Therefore, when the Kdoctor agent concurrently handles a large number of tasks, the high request volume combined with low memory limits can lead to memory overload and result in OOM (Out of Memory) errors.
