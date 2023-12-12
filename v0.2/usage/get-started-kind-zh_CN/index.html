@@ -1129,164 +1129,167 @@ kdoctor-controller      ClusterIP      172.41.210.120   &lt;none&gt;            
 kdoctor-test-server     ClusterIP      172.41.95.144    &lt;none&gt;                   80/TCP,443/TCP,53/UDP,53/TCP,853/TCP        3h46m
 </code></pre>
 <blockquote>
-<p><code>kdoctor-test-server</code> 为 kdoctor 的测试 server，里面包含 http server、https server、dns udp server、dns tcp server,供测试 kdocotr 功能使用。 </p>
+<p><code>kdoctor-test-server</code> 为 kdoctor 的测试 server，里面包含 http server、https server、dns udp server、dns tcp server,供测试 kdocotr 功能使用。</p>
 </blockquote>
 <h2 id="_3">配置任务</h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">AppHttpHealthy</label><label for="__tabbed_1_2">NetReach</label><label for="__tabbed_1_3">NetDns</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:1"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">AppHttpHealthy</label></div>
 <div class="tabbed-content">
-<div class="tabbed-block">
+<div class="tabbed-block"></div>
+</div>
+</div>
 <p>我们对 kdocotr-test-server 的 service ip 进行访问，获取 kdocotr-test-server 的响应情况。</p>
 <p><code>bash
-SERVER="172.41.95.144"
-cat &lt;&lt;EOF | kubectl apply -f -
-apiVersion: kdoctor.io/v1beta1
-kind: AppHttpHealthy
-metadata:
-  name: http-test
-spec:
-  request:
-    durationInSecond: 10
-    perRequestTimeoutInMS: 1000
-    qps: 10
-  schedule:
-    roundNumber: 1
-    roundTimeoutMinute: 1
-    schedule: 0 1
-  expect:
-    meanAccessDelayInMs: 1000
-    successRate: 1
-  target:
-    host: http://${SERVER}
-    method: GET
-EOF</code></p>
+  SERVER="172.41.95.144"
+  cat &lt;&lt;EOF | kubectl apply -f -
+  apiVersion: kdoctor.io/v1beta1
+  kind: AppHttpHealthy
+  metadata:
+    name: http-test
+  spec:
+    request:
+      durationInSecond: 10
+      perRequestTimeoutInMS: 1000
+      qps: 10
+    schedule:
+      roundNumber: 1
+      roundTimeoutMinute: 1
+      schedule: 0 1
+    expect:
+      meanAccessDelayInMs: 1000
+      successRate: 1
+    target:
+      host: http://${SERVER}
+      method: GET
+  EOF</code></p>
 <p>查看任务状态，等待任务完成。</p>
 <p><code>bash
-~# kubectl get apphttphealthy
-NAME        FINISH   EXPECTEDROUND   DONEROUND   LASTROUNDSTATUS   SCHEDULE
-http-test   false    1               0                             0 1
-~# kubectl get apphttphealthy
-NAME        FINISH   EXPECTEDROUND   DONEROUND   LASTROUNDSTATUS   SCHEDULE
-http-test   true     1               1           succeed           0 1</code>      </p>
+  ~# kubectl get apphttphealthy
+  NAME        FINISH   EXPECTEDROUND   DONEROUND   LASTROUNDSTATUS   SCHEDULE
+  http-test   false    1               0                             0 1
+  ~# kubectl get apphttphealthy
+  NAME        FINISH   EXPECTEDROUND   DONEROUND   LASTROUNDSTATUS   SCHEDULE
+  http-test   true     1               1           succeed           0 1</code></p>
 <p>查询任务详细报告。</p>
 <p><code>bash
-~# kubectl get kdoctorreport http-test -oyaml
-apiVersion: system.kdoctor.io/v1beta1
-kind: KdoctorReport
-metadata:
-  creationTimestamp: "2023-12-11T07:20:01Z"
-  name: http-test
-spec:
-  FailedRoundNumber: null
-  FinishedRoundNumber: 1
-  Report:
-  - EndTimeStamp: "2023-12-11T07:20:11Z"
-    HttpAppHealthyTask:
-      Detail:
-      - MeanDelay: 10.44
-        Metrics:
-          Duration: 10.003604664s
-          EndTime: "2023-12-11T07:20:11Z"
-          Errors: {}
-          ExistsNotSendRequests: false
-          Latencies:
-            MaxInMs: 0
-            MeanInMs: 10.44
-            MinInMs: 0
-            P50InMs: 0
-            P90InMs: 0
-            P95InMs: 0
-            P99InMs: 0
-          RequestCounts: 100
-          StartTime: "2023-12-11T07:20:01Z"
-          StatusCodes:
-            "200": 100
-          SuccessCounts: 100
-          TPS: 9.996396634892049
-          TotalDataSize: 37394 byte
+  ~# kubectl get kdoctorreport http-test -oyaml
+  apiVersion: system.kdoctor.io/v1beta1
+  kind: KdoctorReport
+  metadata:
+    creationTimestamp: "2023-12-11T07:20:01Z"
+    name: http-test
+  spec:
+    FailedRoundNumber: null
+    FinishedRoundNumber: 1
+    Report:
+    - EndTimeStamp: "2023-12-11T07:20:11Z"
+      HttpAppHealthyTask:
+        Detail:
+        - MeanDelay: 10.44
+          Metrics:
+            Duration: 10.003604664s
+            EndTime: "2023-12-11T07:20:11Z"
+            Errors: {}
+            ExistsNotSendRequests: false
+            Latencies:
+              MaxInMs: 0
+              MeanInMs: 10.44
+              MinInMs: 0
+              P50InMs: 0
+              P90InMs: 0
+              P95InMs: 0
+              P99InMs: 0
+            RequestCounts: 100
+            StartTime: "2023-12-11T07:20:01Z"
+            StatusCodes:
+              "200": 100
+            SuccessCounts: 100
+            TPS: 9.996396634892049
+            TotalDataSize: 37394 byte
+          Succeed: true
+          SucceedRate: 1
+          TargetMethod: GET
+          TargetName: HttpAppHealthy target
+          TargetUrl: http://172.41.95.144
         Succeed: true
-        SucceedRate: 1
-        TargetMethod: GET
-        TargetName: HttpAppHealthy target
-        TargetUrl: http://172.41.95.144
-      Succeed: true
-      SystemResource:
-        MaxCPU: 12.723%
-        MaxMemory: 35.00MB
-        MeanCPU: 6.227%
-      TargetNumber: 1
-      TargetType: HttpAppHealthy
-      TotalRunningLoad:
-        AppHttpHealthyQPS: 10
-        NetDnsQPS: 0
-        NetReachQPS: 0
-    HttpAppHealthyTaskSpec:
-      ...
-    NodeName: kdoctor-control-plane
-    PodName: kdoctor-agent-zm4tn
-    ReportType: agent test report
-    RoundDuration: 10.014725655s
-    RoundNumber: 1
-    RoundResult: succeed
-    StartTimeStamp: "2023-12-11T07:20:01Z"
-    TaskName: apphttphealthy.http-test
-    TaskType: AppHttpHealthy
-  - EndTimeStamp: "2023-12-11T07:20:11Z"
-    HttpAppHealthyTask:
-      Detail:
-      - MeanDelay: 11.24
-        Metrics:
-          Duration: 10.00058331s
-          EndTime: "2023-12-11T07:20:11Z"
-          Errors: {}
-          ExistsNotSendRequests: false
-          Latencies:
-            MaxInMs: 0
-            MeanInMs: 11.24
-            MinInMs: 0
-            P50InMs: 0
-            P90InMs: 0
-            P95InMs: 0
-            P99InMs: 0
-          RequestCounts: 100
-          StartTime: "2023-12-11T07:20:01Z"
-          StatusCodes:
-            "200": 100
-          SuccessCounts: 100
-          TPS: 9.999416724023071
-          TotalDataSize: 37391 byte
+        SystemResource:
+          MaxCPU: 12.723%
+          MaxMemory: 35.00MB
+          MeanCPU: 6.227%
+        TargetNumber: 1
+        TargetType: HttpAppHealthy
+        TotalRunningLoad:
+          AppHttpHealthyQPS: 10
+          NetDnsQPS: 0
+          NetReachQPS: 0
+      HttpAppHealthyTaskSpec:
+        ...
+      NodeName: kdoctor-control-plane
+      PodName: kdoctor-agent-zm4tn
+      ReportType: agent test report
+      RoundDuration: 10.014725655s
+      RoundNumber: 1
+      RoundResult: succeed
+      StartTimeStamp: "2023-12-11T07:20:01Z"
+      TaskName: apphttphealthy.http-test
+      TaskType: AppHttpHealthy
+    - EndTimeStamp: "2023-12-11T07:20:11Z"
+      HttpAppHealthyTask:
+        Detail:
+        - MeanDelay: 11.24
+          Metrics:
+            Duration: 10.00058331s
+            EndTime: "2023-12-11T07:20:11Z"
+            Errors: {}
+            ExistsNotSendRequests: false
+            Latencies:
+              MaxInMs: 0
+              MeanInMs: 11.24
+              MinInMs: 0
+              P50InMs: 0
+              P90InMs: 0
+              P95InMs: 0
+              P99InMs: 0
+            RequestCounts: 100
+            StartTime: "2023-12-11T07:20:01Z"
+            StatusCodes:
+              "200": 100
+            SuccessCounts: 100
+            TPS: 9.999416724023071
+            TotalDataSize: 37391 byte
+          Succeed: true
+          SucceedRate: 1
+          TargetMethod: GET
+          TargetName: HttpAppHealthy target
+          TargetUrl: http://172.41.95.144
         Succeed: true
-        SucceedRate: 1
-        TargetMethod: GET
-        TargetName: HttpAppHealthy target
-        TargetUrl: http://172.41.95.144
-      Succeed: true
-      SystemResource:
-        MaxCPU: 12.704%
-        MaxMemory: 35.00MB
-        MeanCPU: 6.370%
-      TargetNumber: 1
-      TargetType: HttpAppHealthy
-      TotalRunningLoad:
-        AppHttpHealthyQPS: 10
-        NetDnsQPS: 0
-        NetReachQPS: 0
-    HttpAppHealthyTaskSpec:
-      ...
-    NodeName: kdoctor-worker
-    PodName: kdoctor-agent-5n4nb
-    ReportType: agent test report
-    RoundDuration: 10.010301747s
+        SystemResource:
+          MaxCPU: 12.704%
+          MaxMemory: 35.00MB
+          MeanCPU: 6.370%
+        TargetNumber: 1
+        TargetType: HttpAppHealthy
+        TotalRunningLoad:
+          AppHttpHealthyQPS: 10
+          NetDnsQPS: 0
+          NetReachQPS: 0
+      HttpAppHealthyTaskSpec:
+        ...
+      NodeName: kdoctor-worker
+      PodName: kdoctor-agent-5n4nb
+      ReportType: agent test report
+      RoundDuration: 10.010301747s
+      RoundNumber: 1
+      RoundResult: succeed
+      StartTimeStamp: "2023-12-11T07:20:01Z"
+      TaskName: apphttphealthy.http-test
+      TaskType: AppHttpHealthy
+    ReportRoundNumber: 1
     RoundNumber: 1
-    RoundResult: succeed
-    StartTimeStamp: "2023-12-11T07:20:01Z"
-    TaskName: apphttphealthy.http-test
-    TaskType: AppHttpHealthy
-  ReportRoundNumber: 1
-  RoundNumber: 1
-  Status: Finished
-  TaskName: http-test
-  TaskType: AppHttpHealthy</code></p>
-</div>
+    Status: Finished
+    TaskName: http-test
+    TaskType: AppHttpHealthy</code></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">NetReach</label><label for="__tabbed_2_2">NetDns</label></div>
+<div class="tabbed-content">
 <div class="tabbed-block">
 <p>我们对集群的连通性进行检测。</p>
 <p><code>bash
