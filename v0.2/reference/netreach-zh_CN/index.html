@@ -1374,7 +1374,7 @@
 <td>任务执行时间, 执行时间应小于roundTimeoutMinute</td>
 <td>string</td>
 <td>可选</td>
-<td>支持 linux crontab 与间隔法两种写法<br/><a href="https://linuxhandbook.com/crontab/">linux crontab</a> ： */1 * * * * 表示每分钟执行一次 <br/>间隔法：书写格式为 “M N” ，M取值为一个数字，表示多少分钟之后开启任务，N取值为一个数字，表示每一轮任务的间隔多少分钟执行，例如 “0 1” 表示立即开始任务，每轮任务间隔1min</td>
+<td>支持 linux crontab 与间隔法两种写法<br/><a href="https://linuxhandbook.com/crontab/">linux crontab</a> ： <em>/1</em> ** * 表示每分钟执行一次 <br/>间隔法：书写格式为 “M N” ，M取值为一个数字，表示多少分钟之后开启任务，N取值为一个数字，表示每一轮任务的间隔多少分钟执行，例如 “0 1” 表示立即开始任务，每轮任务间隔1min</td>
 <td>"0 1"</td>
 </tr>
 <tr>

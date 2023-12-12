@@ -1257,17 +1257,17 @@
 helm<span class="w"> </span>repo<span class="w"> </span>update<span class="w"> </span>kdoctor
 helm<span class="w"> </span>install<span class="w"> </span>server<span class="w"> </span>kdoctor/server<span class="w"> </span>-n<span class="w"> </span>kdoctor<span class="w"> </span>--wait<span class="w"> </span>--debug<span class="w"> </span>--create-namespace<span class="w"> </span>
 </code></pre></div>
-<p>Check the status of test server
+<p>Check the status of test server</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>-n<span class="w"> </span>kdoctor<span class="w"> </span>-owide
 NAME<span class="w">                                </span>READY<span class="w">   </span>STATUS<span class="w">    </span>RESTARTS<span class="w">   </span>AGE<span class="w">   </span>IP<span class="w">            </span>NODE<span class="w">                    </span>NOMINATED<span class="w"> </span>NODE<span class="w">   </span>READINESS<span class="w"> </span>GATES
 server-7649566ff9-dv4jc<span class="w">   </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>76s<span class="w">   </span><span class="m">172</span>.40.1.45<span class="w">   </span>kdoctor-worker<span class="w">          </span>&lt;none&gt;<span class="w">           </span>&lt;none&gt;
 server-7649566ff9-qc5dh<span class="w">   </span><span class="m">1</span>/1<span class="w">     </span>Running<span class="w">   </span><span class="m">0</span><span class="w">          </span>76s<span class="w">   </span><span class="m">172</span>.40.0.35<span class="w">   </span>kdoctor-control-plane<span class="w">   </span>&lt;none&gt;<span class="w">           </span>&lt;none&gt;
-</code></pre></div></p>
-<p>Obtain the service address of the test server
+</code></pre></div>
+<p>Obtain the service address of the test server</p>
 <div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>service<span class="w"> </span>-n<span class="w"> </span>kdoctor
 NAME<span class="w">               </span>TYPE<span class="w">        </span>CLUSTER-IP<span class="w">    </span>EXTERNAL-IP<span class="w">   </span>PORT<span class="o">(</span>S<span class="o">)</span><span class="w">                                </span>AGE
 server<span class="w">   </span>ClusterIP<span class="w">   </span><span class="m">172</span>.41.71.0<span class="w">   </span>&lt;none&gt;<span class="w">        </span><span class="m">80</span>/TCP,443/TCP,53/UDP,53/TCP,853/TCP<span class="w">   </span>2m31s
-</code></pre></div></p>
+</code></pre></div>
 <h3 id="create-apphttphealthy">Create AppHttpHealthy</h3>
 <p>Create an <code>AppHttpHealthy</code> task for HTTP that will run continuously for 10 seconds. The task will send GET requests to the specified server at a rate of 10 QPS and be executed immediately.</p>
 <p>We are using the service address of the test server. If you have a different server address available, feel free to use it instead.</p>

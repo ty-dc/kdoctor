@@ -1132,11 +1132,9 @@ kdoctor-test-server<span class="w">     </span>ClusterIP<span class="w">      </
 <p><code>kdoctor-test-server</code> 为 kdoctor 的测试 server，里面包含 http server、https server、dns udp server、dns tcp server,供测试 kdocotr 功能使用。</p>
 </blockquote>
 <h2 id="_3">配置任务</h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:1"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">AppHttpHealthy</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">AppHttpHealthy</label><label for="__tabbed_1_2">NetReach</label><label for="__tabbed_1_3">NetDns</label></div>
 <div class="tabbed-content">
-<div class="tabbed-block"></div>
-</div>
-</div>
+<div class="tabbed-block">
 <p>我们对 kdocotr-test-server 的 service ip 进行访问，获取 kdocotr-test-server 的响应情况。</p>
 <div class="highlight"><pre><span></span><code><span class="nv">SERVER</span><span class="o">=</span><span class="s2">&quot;172.41.95.144&quot;</span>
 cat<span class="w"> </span><span class="s">&lt;&lt;EOF | kubectl apply -f -</span>
@@ -1288,8 +1286,7 @@ spec:
 <span class="w">  </span>TaskName:<span class="w"> </span>http-test
 <span class="w">  </span>TaskType:<span class="w"> </span>AppHttpHealthy
 </code></pre></div>
-<div class="tabbed-set tabbed-alternate" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">NetReach</label><label for="__tabbed_2_2">NetDns</label></div>
-<div class="tabbed-content">
+</div>
 <div class="tabbed-block">
 <p>我们对集群的连通性进行检测。</p>
 <div class="highlight"><pre><span></span><code>cat<span class="w"> </span><span class="s">&lt;&lt;EOF | kubectl apply -f -</span>
