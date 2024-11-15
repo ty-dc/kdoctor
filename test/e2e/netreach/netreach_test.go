@@ -23,10 +23,8 @@ var _ = Describe("testing netReach ", Label("netReach"), func() {
 		var e error
 		crontab := "0 1"
 		netReachName := "netreach-" + tools.RandomName()
-
 		netReach := new(v1beta1.NetReach)
 		netReach.Name = netReachName
-
 		// successCondition
 		successCondition := new(v1beta1.NetSuccessCondition)
 		successCondition.SuccessRate = &successRate
